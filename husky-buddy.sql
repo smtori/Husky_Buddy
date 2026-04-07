@@ -17,16 +17,15 @@ CREATE TABLE IF NOT EXISTS husky_user (
 );
 -- Husky Matching Ids
 CREATE TABLE IF NOT EXISTS husky_match (
-   match_id INT NOT NULL AUTO_INCREMENT,
-   student1_id INT NOT NULL,
-   student2_id INT NOT NULL,
-   status varchar(20),
-   matched_on datetime NOT NULL,
-   PRIMARY KEY (match_id),
-   FOREIGN KEY (student1_id) REFERENCES husky_user(student_id),
-   FOREIGN KEY (student2_id) REFERENCES husky_user(student_id),
-   UNIQUE INDEX (match_id),
-   UNIQUE INDEX unique_pair (student1_id, student2_id)
+    match_id INT NOT NULL AUTO_INCREMENT,
+    student1_id INT NOT NULL,
+    student2_id INT NOT NULL,
+    status ENUM('active', 'pending', 'removed', 'completed') NOT NULL,
+    matched_on datetime NOT NULL,
+    PRIMARY KEY (match_id),
+    FOREIGN KEY (student1_id) REFERENCES husky_user(student_id),
+    FOREIGN KEY (student2_id) REFERENCES husky_user(student_id),
+    UNIQUE INDEX unique_pair (student1_id, student2_id)
 );
 -- Student Interest Tags
 CREATE TABLE IF NOT EXISTS interest_tag(
@@ -140,7 +139,7 @@ CREATE TABLE IF NOT EXISTS match_feedback (
 
 
 -- admin
-CREATE TABLE admin(
+CREATE TABLE IF NOT EXISTS  admin(
    admin_id INT NOT NULL AUTO_INCREMENT,
    name VARCHAR(100) NOT NULL,
    email VARCHAR(100) NOT NULL,
@@ -164,7 +163,7 @@ CREATE TABLE IF NOT EXISTS flag_report(
 
 
 -- moderation action
-CREATE TABLE moderation_action(
+CREATE TABLE  IF NOT EXISTS moderation_action(
    action_id INT AUTO_INCREMENT,
    admin_id INT,
    user_id INT,
@@ -176,6 +175,17 @@ CREATE TABLE moderation_action(
    FOREIGN KEY (admin_id) REFERENCES admin(admin_id),
    FOREIGN KEY (user_id) REFERENCES husky_user(student_id),
    FOREIGN KEY (report_id) REFERENCES flag_report(report_id)
+);
+
+CREATE TABLE IF NOT EXISTS meetup (
+    meetup_id INT NOT NULL AUTO_INCREMENT,
+    match_id INT NOT NULL,
+    meetup_status ENUM('scheduled', 'completed', 'cancelled') NOT NULL,
+    meetup_date DATETIME NOT NULL,
+    spot_id INT,
+    PRIMARY KEY (meetup_id),
+    FOREIGN KEY (match_id) REFERENCES husky_match(match_id) ON DELETE CASCADE,
+    FOREIGN KEY (spot_id) REFERENCES campus_spot(spot_id)
 );
 -- ==================================================
 -- Add in Northeastern majors for the dropdown
