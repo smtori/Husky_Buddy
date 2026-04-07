@@ -26,14 +26,27 @@ AND day_of_week = 'Monday';
 SELECT photo_url FROM meetup_photo
 WHERE uploaded_by IN (
     SELECT student2_id FROM husky_match
-    WHERE student1_id = 1 -- should be the logged in student's id
+    WHERE student1_id = 1
     UNION
-    SELECT husky_match.student1_id
+    SELECT student1_id FROM husky_match
+    WHERE student2_id = 1  -- ❌ this was missing
+    UNION
+    SELECT 1  -- the logged in student's own photos
 );
 
 -- brandon heller #5 (2.5)
 INSERT INTO match_feedback (match_id, student_id, rating, comment, created_at)
-VALUES (1, 1, 4, "it was fun", NOW());
+VALUES (1, 2, 4, "it was fun", NOW());
 
 -- brandon heller #6 (2.6)
--- we have to rewrite interest_tag, it's implementation doesn't match the ER diagram
+INSERT INTO student_spots (student_id, spot_id)
+VALUES (1, 3);
+
+UPDATE student_spots
+SET spot_id = 2 -- new spot (Snell Library); should be a variable
+WHERE student_id = 1 -- should be logged in student's id
+AND spot_id = 3; -- old spot being replaced; should be a variable
+
+DELETE FROM student_spots
+WHERE student_id = 1 -- should be logged in student's id
+AND spot_id = 2; -- should be a variable for the spot being removed
