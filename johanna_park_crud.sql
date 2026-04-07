@@ -1,13 +1,13 @@
 USE `husky-buddy-orig`;
 
--- johanna park #1 (2.1)
+-- johanna park #1 (4.1)
 SELECT
     (SELECT COUNT(*) FROM husky_user) AS total_users,
     (SELECT COUNT(*) FROM husky_user WHERE verification_status = 'verified') AS verified_users,
     (SELECT COUNT(*) FROM husky_match) AS total_matches,
     (SELECT COUNT(*) FROM husky_match WHERE status = 'active') AS active_matches;
 
--- johanna park #2 (2.2)
+-- johanna park #2 (4.2)
 SELECT
     AVG(rating) AS avg_satisfaction,
     COUNT(*) AS total_responses,
@@ -15,7 +15,7 @@ SELECT
     MAX(rating) AS highest_rating
 FROM match_feedback;
 
--- johanna park #3 (2.3)
+-- johanna park #3 (4.3)
 SELECT
     husky_user.year,
     majors.major_name,
@@ -29,7 +29,7 @@ INNER JOIN interest_tag ON student_interest.interest_id = interest_tag.tag_id
 GROUP BY husky_user.year, majors.major_name, interest_tag.tag_type
 ORDER BY user_count DESC;
 
--- johanna park #4 (2.4)
+-- johanna park #4 (4.4)
 SELECT
     COUNT(DISTINCT husky_match.match_id) AS matches_met_in_person,
     COUNT(DISTINCT husky_match.match_id) * 100.0 /
@@ -37,7 +37,7 @@ SELECT
 FROM husky_match
 INNER JOIN meetup_photo ON meetup_photo.match_id = husky_match.match_id;
 
--- johanna park #5 (2.5)
+-- johanna park #5 (4.5)
 SELECT
     YEAR(matched_on) AS year,
     MONTH(matched_on) AS month,
@@ -46,7 +46,7 @@ FROM husky_match
 GROUP BY YEAR(matched_on), MONTH(matched_on)
 ORDER BY year ASC, month ASC;
 
--- johanna park #6 (2.6)
+-- johanna park #6 (4.6)
 SELECT
     m1.major_name AS student1_major,
     m2.major_name AS student2_major,
