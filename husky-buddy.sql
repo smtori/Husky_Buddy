@@ -159,7 +159,7 @@ CREATE TABLE moderation_action(
     admin_id INT,
     user_id INT,
     report_id INT,
-    action_type VARCHAR(100),
+    action_type ENUM('removed', 'kept'),
     action_date TIMESTAMP,
     notes TEXT,
     PRIMARY KEY (action_id),
