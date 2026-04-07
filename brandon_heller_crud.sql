@@ -2,7 +2,7 @@ USE `husky-buddy-orig`;
 
 -- brandon heller #1 (2.1) NOTE: will be from the standpoint of inserting brandon's prompt to DB
 INSERT INTO icebreaker_prompt (prompt_text, category)
-VALUES ("I like pizza", "Favorite Food")
+VALUES ("I like pizza", "Favorite Food");
 
 -- brandon heller #2 (2.2)
 SELECT match1.first_name AS your_name,
