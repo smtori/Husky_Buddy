@@ -22,7 +22,7 @@ VALUES (1, 2, 'cyberbullying', 'under review', NOW());
 -- adam johnson #5 (1.5) NOTE: SSO auth handled at application level, not in SQL. This is the best that can be done on the SQL level
 ALTER TABLE husky_user
 ADD CONSTRAINT check_northeastern_email
-CHECK (nu_email LIKE '%@northeastern.edu');
+CHECK (email LIKE '%@northeastern.edu');
 
 
 -- adam johnson #6 (1.6)
@@ -31,8 +31,8 @@ SELECT
     flag_report.reason,
     flag_report.created_at,
     flag_report.status,
-    reporter.nu_email AS reporter_email,
-    reported.nu_email AS reported_email
+    reporter.email AS reporter_email,
+    reported.email AS reported_email
 FROM flag_report
 INNER JOIN husky_user AS reporter ON flag_report.reporter_id = reporter.student_id
 INNER JOIN husky_user AS reported ON flag_report.reported_id = reported.student_id

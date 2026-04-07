@@ -4,13 +4,13 @@ USE `husky-buddy-orig`;
 
 CREATE TABLE IF NOT EXISTS husky_user (
    student_id INT NOT NULL AUTO_INCREMENT,
-   firstName varchar(50) NOT NULL,
-   lastName varchar(50) NOT NULL,
-   nu_email varchar(75) NOT NULL,
-   class_year ENUM('1st', '2nd', '3rd', '4th', '5th', 'Grad') NOT NULL,
+   first_name varchar(50) NOT NULL,
+   last_name varchar(50) NOT NULL,
+   email varchar(75) NOT NULL,
+   year ENUM('1st', '2nd', '3rd', '4th', '5th', 'Grad') NOT NULL,
    verification_status varchar(20),
    PRIMARY KEY (student_id),
-   UNIQUE INDEX (nu_email)
+   UNIQUE INDEX (email)
 
 );
 -- Husky Matching Ids
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS husky_match (
 -- Student Interest Tags
 CREATE TABLE IF NOT EXISTS interest_tag(
     tag_id   INT NOT NULL AUTO_INCREMENT,
-    tag_name VARCHAR(100) NOT NULL UNIQUE,
+    tag_type VARCHAR(100) NOT NULL UNIQUE,
     PRIMARY KEY (tag_id)
 );
 -- Student Interests
@@ -132,11 +132,9 @@ CREATE TABLE IF NOT EXISTS match_feedback (
 -- admin
 CREATE TABLE admin(
     admin_id INT NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    admin_email VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
     role VARCHAR(100) NOT NULL,
-    status VARCHAR(100) NOT NULL,
     PRIMARY KEY(admin_id)
 );
 -- create report
@@ -146,7 +144,7 @@ CREATE TABLE IF NOT EXISTS flag_report(
     reported_id INT NOT NULL,
     reason text,
     status varchar(20),
-    created_at DATETIME,
+    created_at TIMESTAMP,
     PRIMARY KEY (report_id),
     FOREIGN KEY (reporter_id) REFERENCES husky_user(student_id),
     FOREIGN KEY (reported_id) REFERENCES husky_user(student_id)
@@ -251,7 +249,7 @@ INSERT INTO majors (major_name) VALUES
     ('Theatre'),
     ('Undeclared');
 
-INSERT INTO interest_tag (tag_name) VALUES
+INSERT INTO interest_tag (tag_type) VALUES
     ('Sports and Fitness'),
     ('Arts and Creativity'),
     ('Tech'),
@@ -265,7 +263,7 @@ INSERT INTO interest_tag (tag_name) VALUES
 -- Sample Data
 -- =======================================
 -- User Data
-INSERT INTO husky_user(`firstName`, `lastName`, `nu_email`, `class_year`, `verification_status`)
+INSERT INTO husky_user(`first_name`, `last_name`, `email`, `year`, `verification_status`)
 VALUES('Brandon', 'Heller', 'he.bra@northeastern.edu','1st', 'verified'),
    ('Natalie', 'Frost','fro.nat@northeastern.edu', '2nd', 'verified' ),
    ('Sarah', 'Miller','miller.sa@northeastern.edu','3rd','pending');

@@ -17,16 +17,16 @@ FROM match_feedback;
 
 -- johanna park #3 (2.3)
 SELECT
-    husky_user.class_year,
+    husky_user.year,
     majors.major_name,
-    interest_tag.tag_name,
+    interest_tag.tag_type,
     COUNT(*) AS user_count
 FROM husky_user
 INNER JOIN student_major_tags ON husky_user.student_id = student_major_tags.student_id
 INNER JOIN majors ON student_major_tags.major_id = majors.major_id
 INNER JOIN student_interest ON husky_user.student_id = student_interest.student_id
 INNER JOIN interest_tag ON student_interest.interest_id = interest_tag.tag_id
-GROUP BY husky_user.class_year, majors.major_name, interest_tag.tag_name
+GROUP BY husky_user.year, majors.major_name, interest_tag.tag_type
 ORDER BY user_count DESC;
 
 -- johanna park #4 (2.4)

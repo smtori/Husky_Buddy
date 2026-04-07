@@ -12,17 +12,17 @@ WHERE student_id = 123456;
 DELETE FROM student_interest
 WHERE interest_id = (
     SELECT tag_id FROM interest_tag
-    WHERE tag_name = 'Tennis'
+    WHERE tag_type = 'Tennis'
 );
 
 -- natalie frost #3 (3.3)
 ALTER TABLE husky_user
 ADD CONSTRAINT check_northeastern_email
-CHECK (nu_email LIKE '%@northeastern.edu');
+CHECK (email LIKE '%@northeastern.edu');
 
 
 -- natalie frost #4 (3.4)
-SELECT firstName, lastName from husky_user
+SELECT first_name, last_name from husky_user
 INNER JOIN husky_match ON husky_match.student2_id = husky_user.student_id
 WHERE husky_user.student_id = 1; -- should be logged in user
 
@@ -43,7 +43,7 @@ VALUES
     (123456, 3),
     (123456, 4);
 
-INSERT INTO interest_tag (tag_name)
+INSERT INTO interest_tag (tag_type)
 VALUES
     ('football'),
     ('golf'),

@@ -5,12 +5,12 @@ INSERT INTO icebreaker_prompt (prompt_text, category)
 VALUES ("I like pizza", "Favorite Food")
 
 -- brandon heller #2 (2.2)
-SELECT match1.firstName AS your_name,
-       match1.lastName AS your_lastName,
-       match1.nu_email AS your_email,
-       match2.firstName as match_name,
-       match2.lastName AS match_lastName,
-       match2.nu_email AS match_email
+SELECT match1.first_name AS your_name,
+       match1.last_name AS your_lastName,
+       match1.email AS your_email,
+       match2.first_name as match_name,
+       match2.last_name AS match_lastName,
+       match2.email AS match_email
 FROM husky_match
 INNER JOIN husky_user AS match1 ON match1.student_id = student1_id
 INNER JOIN husky_user AS match2 ON match2.student_id = student2_id
