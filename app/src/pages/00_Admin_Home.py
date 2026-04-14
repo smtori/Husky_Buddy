@@ -15,9 +15,9 @@ st.write('### What would you like to do today?')
 if st.button('View User Account Management',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/User_Account_Management.py')
+    st.switch_page('pages/03_User_Account_Management.py')
 
 if st.button('View Moderation Logs',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/Moderation_Logs.py')
+    st.switch_page('pages/04_Moderation_Logs.py')
