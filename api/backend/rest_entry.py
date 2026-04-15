@@ -9,7 +9,10 @@ from backend.ngos.ngo_routes import ngos
 from backend.users.users_routes import users
 
 
-def create_app():
+def create_app() -> Flask:
+    """
+    handles app creation logic, no modifications necessary excluding blueprint registration
+    """
     app = Flask(__name__)
 
     app.logger.setLevel(logging.DEBUG)

@@ -1,10 +1,14 @@
-from flask import Blueprint, jsonify, request
+""""""
+
+from flask import Blueprint, jsonify, request, Response
 from backend.db_connection import get_db
+from typing import List, Dict, Any
 
 users = Blueprint('users', __name__)
 
 @users.route('/users', methods=['GET'])
-def get_users():
+def get_users() -> Response:
+
     cursor = get_db().cursor()
 
     query = """
@@ -16,7 +20,11 @@ def get_users():
     cursor.execute(query)
     rows = cursor.fetchall()
 
-    result = []
+    # creating a list of dicts that will be converted to json
+    result: List[Dict[str, Any]] = []
+
+    # appending each sql row to list, each row is represented as a dict.
+    # Time complexity: o(n) - maybe a python library exists to speed this up?
     for row in rows:
         result.append({
             "student_id": row[0],
@@ -28,10 +36,11 @@ def get_users():
             "status": row[5]
         })
 
+    # returning previously created list of dicts as json via jsonify
     return jsonify(result)
 
 @users.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
+def get_user(user_id) -> Response:
     cursor = get_db().cursor()
 
     query = """
