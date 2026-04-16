@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app
 from backend.db_connection import get_db
 from mysql.connector import Error
-
+import time
 # Create a Blueprint for report routes
 reports = Blueprint("reports", __name__)
 
@@ -44,33 +44,32 @@ def get_report(report_id):
         cursor.close()
 
 # Create a new report
-# Required fields: Name, Country, Founding_Year, Focus_Area, Website
-# Example: POST /ngo/ngos with JSON body
-@ngos.route("/ngos", methods=["POST"])
+# Required fields: Name, Reason, 
+@ngos.route("/reports", methods=["POST"])
 def create_ngo():
     cursor = get_db().cursor(dictionary=True)
     try:
         data = request.get_json()
 
-        required_fields = ["Name", "Country", "Founding_Year", "Focus_Area", "Website"]
+        required_fields = ["reporter_id", "reported_id", "reason", "status"]
         for field in required_fields:
             if field not in data:
                 return jsonify({"error": f"Missing required field: {field}"}), 400
 
         query = """
-            INSERT INTO WorldNGOs (Name, Country, Founding_Year, Focus_Area, Website)
+            INSERT INTO flag_report (reporter_id, reported_id, reason, status, created_at)
             VALUES (%s, %s, %s, %s, %s)
         """
         cursor.execute(query, (
-            data["Name"],
-            data["Country"],
-            data["Founding_Year"],
-            data["Focus_Area"],
-            data["Website"],
+            data["reporter_id"],
+            data["reported_id"],
+            data["reason"],
+            data["status"],
+            time.time,
         ))
 
         get_db().commit()
-        return jsonify({"message": "NGO created successfully", "ngo_id": cursor.lastrowid}), 201
+        return jsonify({"message": "Report created successfully", "report_id": cursor.lastrowid}), 201
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:
