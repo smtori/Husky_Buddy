@@ -76,33 +76,31 @@ def create_ngo():
         cursor.close()
 
 
-# Update an existing NGO's information
-# Can update any field except NGO_ID
-# Example: PUT /ngo/ngos/1 with JSON body containing fields to update
-@ngos.route("/ngos/<int:ngo_id>", methods=["PUT"])
-def update_ngo(ngo_id):
+# Update an existing reports information
+@ngos.route("/reports/<int:report_id>", methods=["PUT"])
+def update_ngo(report_id):
     cursor = get_db().cursor(dictionary=True)
     try:
         data = request.get_json()
 
-        cursor.execute("SELECT NGO_ID FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
+        cursor.execute("SELECT report_id FROM flag_report WHERE report_id = %s", (report_id,))
         if not cursor.fetchone():
-            return jsonify({"error": "NGO not found"}), 404
+            return jsonify({"error": "Report not found"}), 404
 
         # Build update query dynamically based on provided fields
-        allowed_fields = ["Name", "Country", "Founding_Year", "Focus_Area", "Website"]
+        allowed_fields = ["status"]
         update_fields = [f"{f} = %s" for f in allowed_fields if f in data]
         params = [data[f] for f in allowed_fields if f in data]
 
         if not update_fields:
             return jsonify({"error": "No valid fields to update"}), 400
 
-        params.append(ngo_id)
-        query = f"UPDATE WorldNGOs SET {', '.join(update_fields)} WHERE NGO_ID = %s"
+        params.append(report_id)
+        query = f"UPDATE flag_report SET {', '.join(update_fields)} WHERE report_id = %s"
         cursor.execute(query, params)
         get_db().commit()
 
-        return jsonify({"message": "NGO updated successfully"}), 200
+        return jsonify({"message": "Report updated successfully"}), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:
