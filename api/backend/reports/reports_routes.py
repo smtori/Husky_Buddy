@@ -2,11 +2,11 @@ from flask import Blueprint, jsonify, request, current_app
 from backend.db_connection import get_db
 from mysql.connector import Error
 
-# Create a Blueprint for NGO routes
+# Create a Blueprint for report routes
 reports = Blueprint("reports", __name__)
 
 
-# Get all NGOs with optional filtering by country, focus area, and founding year
+# Get all reports
 @reports.route("/reports", methods=["GET"])
 def get_all_reports():
     cursor = get_db().cursor(dictionary=True)
@@ -26,33 +26,24 @@ def get_all_reports():
         cursor.close()
 
 
-# Get detailed information about a specific NGO including its projects and donors
-# Example: /ngo/ngos/1
-@ngos.route("/reports/<int:ngo_id>", methods=["GET"])
-def get_ngo(ngo_id):
+# Get detailed information about a specific report
+@ngos.route("/reports/<int:report_id>", methods=["GET"])
+def get_report(report_id):
     cursor = get_db().cursor(dictionary=True)
     try:
-        cursor.execute("SELECT * FROM WorldNGOs WHERE report_id = %s", (ngo_id,))
-        ngo = cursor.fetchone()
+        cursor.execute("SELECT * FROM flag_report WHERE report_id = %s", (report_id,))
+        report = cursor.fetchone()
 
-        if not ngo:
+        if not report:
             return jsonify({"error": "NGO not found"}), 404
 
-        # Reuse the same cursor for the follow-up queries
-        cursor.execute("SELECT * FROM Projects WHERE NGO_ID = %s", (ngo_id,))
-        ngo["projects"] = cursor.fetchall()
-
-        cursor.execute("SELECT * FROM Donors WHERE NGO_ID = %s", (ngo_id,))
-        ngo["donors"] = cursor.fetchall()
-
-        return jsonify(ngo), 200
+        return jsonify(report), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:
         cursor.close()
 
-
-# Create a new NGO
+# Create a new report
 # Required fields: Name, Country, Founding_Year, Focus_Area, Website
 # Example: POST /ngo/ngos with JSON body
 @ngos.route("/ngos", methods=["POST"])
