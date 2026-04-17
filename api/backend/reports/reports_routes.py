@@ -76,7 +76,7 @@ def create_ngo():
         cursor.close()
 
 
-# Update an existing reports information
+# Update an existing reports status
 @reports.route("/reports/<int:report_id>", methods=["PUT"])
 def update_report(report_id):
     cursor = get_db().cursor(dictionary=True)
@@ -106,36 +106,18 @@ def update_report(report_id):
     finally:
         cursor.close()
 
-
-# Get all reports associated with a specific student
-@ngos.route("/flag_report/<int:reported_id>/reports", methods=["GET"])
-def get_student_reports(student_id):
+# Get all reports associated with a specific user who has been reported
+@reports.route("/reports/reported/<int:reported_id>", methods=["GET"])
+def get_user_reports(reported_id):
     cursor = get_db().cursor(dictionary=True)
     try:
-        cursor.execute("SELECT reported_id FROM flag_report WHERE reported_id = %s", (reported_id,))
-        if not cursor.fetchone():
-            return jsonify({"error": "ID not found"}), 404
-
         cursor.execute("SELECT * FROM flag_report WHERE reported_id = %s", (reported_id,))
-        return jsonify(cursor.fetchall()), 200
-    except Error as e:
-        return jsonify({"error": str(e)}), 500
-    finally:
-        cursor.close()
+        reports_list = cursor.fetchall()
 
+        if not reports_list:
+            return jsonify({"error": "No reports found for this user"}), 404
 
-# Get all donors associated with a specific NGO
-# Example: /ngo/ngos/1/donors
-@ngos.route("/ngos/<int:ngo_id>/donors", methods=["GET"])
-def get_ngo_donors(ngo_id):
-    cursor = get_db().cursor(dictionary=True)
-    try:
-        cursor.execute("SELECT NGO_ID FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
-        if not cursor.fetchone():
-            return jsonify({"error": "NGO not found"}), 404
-
-        cursor.execute("SELECT * FROM Donors WHERE NGO_ID = %s", (ngo_id,))
-        return jsonify(cursor.fetchall()), 200
+        return jsonify(reports_list), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
     finally:
