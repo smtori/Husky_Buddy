@@ -77,8 +77,8 @@ def create_ngo():
 
 
 # Update an existing reports information
-@ngos.route("/reports/<int:report_id>", methods=["PUT"])
-def update_ngo(report_id):
+@reports.route("/reports/<int:report_id>", methods=["PUT"])
+def update_report(report_id):
     cursor = get_db().cursor(dictionary=True)
     try:
         data = request.get_json()
@@ -107,17 +107,16 @@ def update_ngo(report_id):
         cursor.close()
 
 
-# Get all projects associated with a specific NGO
-# Example: /ngo/ngos/1/projects
-@ngos.route("/ngos/<int:ngo_id>/projects", methods=["GET"])
-def get_ngo_projects(ngo_id):
+# Get all reports associated with a specific student
+@ngos.route("/flag_report/<int:reported_id>/reports", methods=["GET"])
+def get_student_reports(student_id):
     cursor = get_db().cursor(dictionary=True)
     try:
-        cursor.execute("SELECT NGO_ID FROM WorldNGOs WHERE NGO_ID = %s", (ngo_id,))
+        cursor.execute("SELECT reported_id FROM flag_report WHERE reported_id = %s", (reported_id,))
         if not cursor.fetchone():
-            return jsonify({"error": "NGO not found"}), 404
+            return jsonify({"error": "ID not found"}), 404
 
-        cursor.execute("SELECT * FROM Projects WHERE NGO_ID = %s", (ngo_id,))
+        cursor.execute("SELECT * FROM flag_report WHERE reported_id = %s", (reported_id,))
         return jsonify(cursor.fetchall()), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
