@@ -7,6 +7,7 @@ from backend.db_connection import init_app as init_db
 from backend.simple.simple_routes import simple_routes
 from backend.ngos.ngo_routes import ngos
 from backend.users.users_routes import users
+from backend.reports.reports_routes import reports
 
 
 def create_app() -> Flask:
@@ -42,5 +43,6 @@ def create_app() -> Flask:
     app.register_blueprint(simple_routes)
     app.register_blueprint(ngos, url_prefix="/ngo")
     app.register_blueprint(users)
+    app.register_blueprint(reports)
 
     return app

@@ -12,7 +12,7 @@ def get_all_reports():
     cursor = get_db().cursor(dictionary=True)
     try:
         current_app.logger.info('GET /report/reports')
-        query = "SELECT * FROM flag_report"
+        query = "SELECT * FROM flag_report ORDER BY report_id DESC"
 
         cursor.execute(query)
         reports_list = cursor.fetchall()
@@ -25,9 +25,8 @@ def get_all_reports():
     finally:
         cursor.close()
 
-
 # Get detailed information about a specific report
-@ngos.route("/reports/<int:report_id>", methods=["GET"])
+@reports.route("/reports/<int:report_id>", methods=["GET"])
 def get_report(report_id):
     cursor = get_db().cursor(dictionary=True)
     try:
@@ -35,7 +34,7 @@ def get_report(report_id):
         report = cursor.fetchone()
 
         if not report:
-            return jsonify({"error": "NGO not found"}), 404
+            return jsonify({"error": "Report not found"}), 404
 
         return jsonify(report), 200
     except Error as e:
@@ -45,11 +44,13 @@ def get_report(report_id):
 
 # Create a new report
 # Required fields: Name, Reason, 
-@ngos.route("/reports", methods=["POST"])
-def create_ngo():
+@reports.route("/reports", methods=["POST"])
+def create_report():
     cursor = get_db().cursor(dictionary=True)
     try:
         data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request body is required"}), 400
 
         required_fields = ["reporter_id", "reported_id", "reason", "status"]
         for field in required_fields:
@@ -65,7 +66,7 @@ def create_ngo():
             data["reported_id"],
             data["reason"],
             data["status"],
-            time.time,
+            time.time(),
         ))
 
         get_db().commit()
@@ -82,13 +83,15 @@ def update_report(report_id):
     cursor = get_db().cursor(dictionary=True)
     try:
         data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request body is required"}), 400
 
         cursor.execute("SELECT report_id FROM flag_report WHERE report_id = %s", (report_id,))
         if not cursor.fetchone():
             return jsonify({"error": "Report not found"}), 404
 
         # Build update query dynamically based on provided fields
-        allowed_fields = ["status"]
+        allowed_fields = ["status", "reason"]
         update_fields = [f"{f} = %s" for f in allowed_fields if f in data]
         params = [data[f] for f in allowed_fields if f in data]
 
@@ -117,6 +120,38 @@ def get_user_reports(reported_id):
         if not reports_list:
             return jsonify({"error": "No reports found for this user"}), 404
 
+        return jsonify(reports_list), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+
+
+# Get only pending reports
+@reports.route("/reports/pending", methods=["GET"])
+def get_pending_reports():
+    cursor = get_db().cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "SELECT * FROM flag_report WHERE LOWER(status) = 'pending' ORDER BY report_id DESC"
+        )
+        reports_list = cursor.fetchall()
+        return jsonify(reports_list), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+
+
+# Get only resolved reports
+@reports.route("/reports/resolved", methods=["GET"])
+def get_resolved_reports():
+    cursor = get_db().cursor(dictionary=True)
+    try:
+        cursor.execute(
+            "SELECT * FROM flag_report WHERE LOWER(status) = 'resolved' ORDER BY report_id DESC"
+        )
+        reports_list = cursor.fetchall()
         return jsonify(reports_list), 200
     except Error as e:
         return jsonify({"error": str(e)}), 500
