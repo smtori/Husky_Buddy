@@ -55,50 +55,50 @@ if not st.session_state.show_success_modal:
 
         submitted = st.form_submit_button("Submit Report", use_container_width=True)
 
-if submitted:
-            missing = []
-            if not first_name:
-                missing.append("First Name")
-            if not last_name:
-                missing.append("Last Name")
-            if not email:
-                missing.append("Northeastern Email")
-            if not reported_name:
-                missing.append("Reported User's Name")
-            if not report_reason:
-                missing.append("Report Information")
-            if not incident_date:
-                missing.append("Date of Incident")
+    if submitted:
+                missing = []
+                if not first_name:
+                    missing.append("First Name")
+                if not last_name:
+                    missing.append("Last Name")
+                if not email:
+                    missing.append("Northeastern Email")
+                if not reported_name:
+                    missing.append("Reported User's Name")
+                if not report_reason:
+                    missing.append("Report Information")
+                if not incident_date:
+                    missing.append("Date of Incident")
 
-            if missing:
-                st.error(f"Please fill in: {', '.join(missing)}")
-            elif not email.lower().endswith("@northeastern.edu"):
-                st.error("Email must be a valid @northeastern.edu address.")
-            else:
-                report_data = {
-                    "first_name": first_name,
-                    "last_name": last_name,
-                    "email": email,
-                    "reported_name": reported_name,
-                    "report_reason": report_reason,
-                    "incident_date": incident_date.isoformat() if incident_date else None,
-                }
+                if missing:
+                    st.error(f"Please fill in: {', '.join(missing)}")
+                elif not email.lower().endswith("@northeastern.edu"):
+                    st.error("Email must be a valid @northeastern.edu address.")
+                else:
+                    report_data = {
+                        "first_name": first_name,
+                        "last_name": last_name,
+                        "email": email,
+                        "reported_name": reported_name,
+                        "report_reason": report_reason,
+                        "incident_date": incident_date.isoformat() if incident_date else None,
+                    }
 
-                try:
-                    response = requests.post(f"{BASE_URL}/reports", json=report_data)
+                    try:
+                        response = requests.post(f"{BASE_URL}/reports", json=report_data)
 
-                    if response.status_code in (200, 201):
-                        st.session_state.show_success_modal = True
-                        st.rerun()
-                    else:
-                        st.error(
-                            f"Failed to submit report: "
-                            f"{response.json().get('error', 'Unknown error')}"
-                        )
+                        if response.status_code in (200, 201):
+                            st.session_state.show_success_modal = True
+                            st.rerun()
+                        else:
+                            st.error(
+                                f"Failed to submit report: "
+                                f"{response.json().get('error', 'Unknown error')}"
+                            )
 
-                except requests.exceptions.RequestException as e:
-                    st.error(f"Error connecting to the API: {str(e)}")
-                    st.info("Please ensure the API server is running.")
+                    except requests.exceptions.RequestException as e:
+                        st.error(f"Error connecting to the API: {str(e)}")
+                        st.info("Please ensure the API server is running.")
 
     if st.button("Cancel", key="page_cancel"):
         st.switch_page("Home.py")
