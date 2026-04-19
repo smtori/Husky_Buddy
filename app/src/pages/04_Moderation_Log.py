@@ -3,146 +3,12 @@ logger = logging.getLogger(__name__)
 
 import streamlit as st
 import requests
+import pandas as pd
 from modules.nav import SideBarLinks
 
 st.set_page_config(page_title='Moderation Log', layout='wide')
 
 SideBarLinks()
-
-
-
-st.header('Moderation Log')
-col1, col2, col3 = st.columns([1, 3, 1])
-with col1:
-    if st.button('← Back to Admin Home', type='secondary', use_container_width=False):
-        st.switch_page('pages/00_Admin_Home.py')
-
-st.markdown(
-    """
-<style>
-.block-container {
-    padding-top: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-}
-
-.definition-card {
-    border: 2px solid #222;
-    border-radius: 18px;
-    padding: 18px 24px;
-    background: #f7f7f7;
-    margin-bottom: 14px;
-}
-
-.definition-title {
-    font-size: 1.3rem;
-    font-weight: 800;
-    margin-bottom: 0.35rem;
-}
-
-.definition-text {
-    color: #444;
-    font-size: 0.98rem;
-    line-height: 1.5;
-}
-
-.metric-box {
-    border: 2px solid #222;
-    border-radius: 18px;
-    padding: 18px 24px;
-    background: #f7f7f7;
-    margin-bottom: 14px;
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-
-.metric-number {
-    float: right;
-    font-weight: 800;
-    font-size: 1.5rem;
-}
-
-.report-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.35rem;
-}
-
-.report-meta {
-    color: #6f6f6f;
-    font-size: 0.96rem;
-    margin-bottom: 0.28rem;
-}
-
-.report-reason {
-    background: white;
-    border-radius: 999px;
-    padding: 10px 16px;
-    font-weight: 600;
-    margin-top: 12px;
-    margin-bottom: 16px;
-}
-
-.status-pill {
-    border: 2px solid #222;
-    border-radius: 999px;
-    padding: 8px 18px;
-    font-weight: 600;
-    background: white;
-    display: inline-block;
-}
-
-.status-pending {
-    color: #222;
-    border-color: #222;
-}
-
-.status-flagged {
-    color: #b45309;
-    border-color: #b45309;
-}
-
-.status-resolved {
-    color: #166534;
-    border-color: #166534;
-}
-
-.status-dismissed {
-    color: #6b7280;
-    border-color: #6b7280;
-}
-
-.investigation-box {
-    border: 2px solid #222;
-    border-radius: 16px;
-    padding: 16px 18px;
-    background: #fafafa;
-    margin-top: 10px;
-    margin-bottom: 8px;
-}
-
-.investigation-title {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-div.stButton > button {
-    border-radius: 14px;
-    height: 46px;
-    font-weight: 600;
-    border: 1.5px solid #222;
-    background: white;
-}
-
-div.stButton > button:hover {
-    background: #f0f0f0;
-
-}
-</style>
-""",
-    unsafe_allow_html=True,
-)
 
 API_BASE = 'http://api:4000'
 
@@ -189,23 +55,20 @@ for r in reports_raw:
         'reported_email': reported_info.get('email', 'No email available'),
         'reported_year': reported_info.get('year', ''),
         'reason': r.get('reason', 'No reason provided'),
-        'status': (r.get('status') or 'pending').lower(),
+        'status': (r.get('status') or 'flagged').lower(),
         'created_at': r.get('created_at', '')
     })
 
 pending_count = sum(1 for r in reports if r['status'] == 'pending')
 active_flags = sum(1 for r in reports if r['status'] == 'flagged')
 
+m1, m2 = st.columns(2)
+with m1:
+    st.metric('Pending Reports', pending_count, border=True)
+with m2:
+    st.metric('Active Flags', active_flags, border=True)
 
-st.markdown(
-    f"<div class='metric-box'>Pending Reports: <span class='metric-number'>{pending_count}</span></div>",
-    unsafe_allow_html=True,
-)
-
-st.markdown(
-    f"<div class='metric-box'>Active Flags: <span class='metric-number'>{active_flags}</span></div>",
-    unsafe_allow_html=True,
-)
+st.write('')
 
 if 'moderation_filter' not in st.session_state:
     st.session_state['moderation_filter'] = 'All'
@@ -245,73 +108,39 @@ STATUS_ICONS = {
 for report in filtered_reports:
     status = report['status']
     report_id = report['report_id']
-
-    if status == 'resolved':
-        status_class = 'status-resolved'
-    elif status == 'dismissed':
-        status_class = 'status-dismissed'
-    elif status == 'flagged':
-        status_class = 'status-flagged'
-    else:
-        status_class = 'status-pending'
+    symbol = STATUS_ICONS.get(status, '◉')
+    status_label = status.title()
 
     with st.container(border=True):
         top_left, top_right = st.columns([5, 2])
 
         with top_left:
-            st.markdown(
-                f"<div class='report-title'>⚠ {report['reason']}</div>",
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                f"<div class='report-meta'><b>Reported:</b> {report['reported_name']} (ID: {report['reported_id']})</div>",
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                f"<div class='report-meta'><b>By:</b> {report['reporter_name']} (ID: {report['reporter_id']})</div>",
-                unsafe_allow_html=True,
-            )
-            st.markdown(
-                f"<div class='report-meta'>{report['created_at']}</div>",
-                unsafe_allow_html=True,
-            )
+            st.subheader(f"⚠ {report['reason']}")
+            st.write(f"**Reported:** {report['reported_name']} (ID: {report['reported_id']})")
+            st.write(f"**By:** {report['reporter_name']} (ID: {report['reporter_id']})")
+            st.caption(str(report['created_at']))
 
         with top_right:
-            st.markdown(
-                f"""
-                <div style="display:flex; justify-content:flex-end; margin-top:8px;">
-                    <div class="status-pill {status_class}">
-                        {STATUS_ICONS.get(status, '◉')} {status.title()}
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            st.metric('Status', f'{symbol} {status_label}')
 
-        st.markdown(
-            f"<div class='report-reason'>“{report['reason']}”</div>",
-            unsafe_allow_html=True,
-        )
+        st.info(f'“{report["reason"]}”')
 
         if st.session_state['active_investigation_report'] == report_id:
-            st.markdown(
-                "<div class='investigation-box'><div class='investigation-title'>Investigation Details</div></div>",
-                unsafe_allow_html=True,
-            )
+            st.subheader('Investigation Details')
             st.write(f"**Reported user:** {report['reported_name']} (ID: {report['reported_id']})")
             st.write(f"**Email:** {report['reported_email']}")
             if report['reported_year']:
                 st.write(f"**Year:** {report['reported_year']}")
             st.write(f"**Original report:** {report['reason']}")
 
-            message_key = f"message_{report_id}"
+            message_key = f'message_{report_id}'
             moderator_message = st.text_area(
                 'Message the reported user',
                 key=message_key,
                 placeholder='Write a message to the reported user asking for context or explaining next steps...'
             )
 
-            mc1, mc2 = st.columns([1, 1])
+            mc1, mc2 = st.columns(2)
             with mc1:
                 if st.button('Send Message', key=f'send_message_{report_id}', use_container_width=True):
                     if moderator_message.strip():
@@ -342,18 +171,8 @@ for report in filtered_reports:
 
         with b2:
             if st.button('Investigate', key=f'investigate_{report_id}', use_container_width=True):
-                try:
-                    if report['status'] != 'flagged':
-                        r = requests.put(
-                            f'{API_BASE}/reports/{report_id}',
-                            json={'status': 'flagged'},
-                            timeout=5,
-                        )
-                        r.raise_for_status()
-                    st.session_state['active_investigation_report'] = report_id
-                    st.rerun()
-                except Exception as e:
-                    st.error(f'Could not open investigation for report {report_id}: {e}')
+                st.session_state['active_investigation_report'] = report_id
+                st.rerun()
 
         with b3:
             if st.button('Resolved', key=f'resolved_{report_id}', use_container_width=True):

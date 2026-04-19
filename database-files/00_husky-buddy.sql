@@ -402,8 +402,8 @@ VALUES
 -- Flag Report
 INSERT INTO flag_report (reporter_id, reported_id, reason, status, created_at)
 VALUES
-   (2, 3, 'Missed meetup without sending a message in advance.', 'open', '2026-03-01 09:30:00'),
-   (1, 2, 'Profile information seemed incomplete and possibly misleading.', 'reviewed', '2026-03-02 14:20:00');
+   (2, 3, 'Missed meetup without sending a message in advance.', 'flagged', '2026-03-01 09:30:00'),
+   (1, 2, 'Profile information seemed incomplete and possibly misleading.', 'flagged', '2026-03-02 14:20:00');
 
 
 -- Moderation Action
