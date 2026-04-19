@@ -25,4 +25,4 @@ if st.button('View HuskyBuddy Chat',
 if st.button('Submit a Report',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/11_Prediction.py')
+    st.switch_page('pages/11_Submit_Report.py')
