@@ -9,6 +9,9 @@ st.set_page_config(layout='wide')
 # Show appropriate sidebar links for the role of the currently logged in user
 SideBarLinks()
 
+if st.button("← Back to Home", type="secondary", use_container_width=False):
+    st.switch_page('Home.py')
+
 st.title(f"Welcome System Admin, {st.session_state['first_name']}.")
 st.write("What would you like to do today?")
 if st.button('View User Account Management',
