@@ -78,7 +78,6 @@ def create_user():
 
     cursor = get_db().cursor()
     cursor.execute(query, (
-        data['student_id'],
         data['first_name'],
         data['last_name'],
         data['email'],
