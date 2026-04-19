@@ -66,14 +66,14 @@ row1_col1, row1_col2 = st.columns(2)
 
 with row1_col1:
     persona_card(
-        image_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnaTX0RRzTfBVN_t3oCUxOFlbGBOGGwWxG0w&s",
+        image_url="assets/adam.svg",
         name="Adam Johnson",
         role="System Admin",
         description=(
             "Oversees the HuskyBuddy platform, reviews user reports, "
             "manages accounts, and ensures community guidelines are upheld."
         ),
-        button_label="Act as Adam Johnson, System Admin",
+        button_label="Act as Adam Johnson",
         button_key="login_adam",
         session_role="Admin",
         first_name="Adam",
@@ -82,14 +82,14 @@ with row1_col1:
 
 with row1_col2:
     persona_card(
-        image_url="https://t4.ftcdn.net/jpg/08/95/54/15/360_F_895541596_gfRZP3Y5xNrC7i2ruskRLwwDhWoFcpq5.jpg",
+        image_url="assets/brandon.svg",
         name="Brandon Heller",
         role="Student User",
         description=(
             "A Northeastern student using HuskyBuddy to find study partners, "
             "discover campus spots, and connect with peers who share his interests."
         ),
-        button_label="Act as Brandon Heller, Student User",
+        button_label="Act as Brandon Heller",
         button_key="login_brandon",
         session_role="student",
         first_name="Brandon",
@@ -100,14 +100,14 @@ row2_col1, row2_col2 = st.columns(2)
 
 with row2_col1:
     persona_card(
-        image_url="https://markaylatimer.com/wp-content/uploads/2020/01/young-executive-woman-profile-icon-vector-9692645.jpg",
+        image_url="assets/natalie.svg",
         name="Natalie Frost",
         role="Student User",
         description=(
             "A Northeastern student exploring HuskyBuddy to meet classmates, "
             "plan meetups, and build a community around her academic interests."
         ),
-        button_label="Act as Natalie Frost, Student User",
+        button_label="Act as Natalie Frost",
         button_key="login_natalie",
         session_role="student",
         first_name="Natalie",
@@ -116,14 +116,14 @@ with row2_col1:
 
 with row2_col2:
     persona_card(
-        image_url="https://markaylatimer.com/wp-content/uploads/2020/01/young-executive-woman-profile-icon-vector-9692645.jpg",
+        image_url="assets/johanna.svg",
         name="Johanna Park",
         role="Data Analyst",
         description=(
             "Analyzes platform usage data, tracks engagement trends, and "
             "provides insights to help improve the HuskyBuddy experience."
         ),
-        button_label="Act as Johanna Park, Data Analyst",
+        button_label="Act as Johanna Park",
         button_key="login_johanna",
         session_role="data_analyst",
         first_name="Johanna",
