@@ -22,7 +22,7 @@ def show_success_dialog():
     st.markdown("We'll use your latest info to find your next HuskyBuddy match.")
     if st.button("Back to Home", use_container_width=True, key="dialog_home"):
         st.session_state.show_success_modal = False
-        st.switch_page("pages/Home.py")
+        st.switch_page("Home.py")
 
 # ── API base ───────────────────────────────────────────────────────────────────
 BASE_URL = "http://web-api:4000"
@@ -210,7 +210,7 @@ if not st.session_state.show_success_modal:
                         st.info("Please ensure the API server is running.")
 
     if st.button("Cancel", key="page_cancel"):
-        st.switch_page("src/Home.py")
+        st.switch_page("Home.py")
 
 if st.session_state.show_success_modal:
     show_success_dialog()
