@@ -12,6 +12,9 @@ BASE_URL = "http://web-api:4000"
 
 current_user_id = st.session_state['user_id']
 
+if st.button("← Back to Options", type="secondary", use_container_width=False):
+    st.switch_page('pages/10_Brandon_Home.py')
+    
 st.header(f"My HuskyBuddy Photo Gallery")
 st.write(f"### Hi, {st.session_state['first_name']}.")
 
