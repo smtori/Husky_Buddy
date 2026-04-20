@@ -84,7 +84,7 @@ with c1:
 
 with c2:
     if st.button('Pending', key='mod_filter_pending', use_container_width=True):
-        st.session_state['moderation_filter'] = 'Pending'
+        st.session_state['moderation_filter'] = 'Flagged'
 
 with c3:
     if st.button('Resolved', key='mod_filter_resolved', use_container_width=True):

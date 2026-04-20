@@ -11,9 +11,11 @@ SideBarLinks()
 
 st.set_page_config(layout="wide")
 
-
 st.title("Submit a report.")
 st.markdown("Submit a report to help keep HuskyBuddy a safe place.")
+
+if st.button("← Back to Options", type="secondary", use_container_width=False):
+    st.switch_page('pages/10_Brandon_Home.py')
 
 # ── Session state ──────────────────────────────────────────────────────────────
 if "show_success_modal" not in st.session_state:

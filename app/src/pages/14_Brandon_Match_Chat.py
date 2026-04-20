@@ -8,6 +8,9 @@ SideBarLinks()
 st.set_page_config(layout="wide")
 st.title("HuskyBuddy Chat")
 
+if st.button("← Back to Options", type="secondary", use_container_width=False):
+    st.switch_page('pages/10_Brandon_Home.py')
+
 BASE_URL = "http://web-api:4000"
 
 current_user_id = 1 # Brandon's  ID
