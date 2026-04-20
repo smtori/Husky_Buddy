@@ -38,7 +38,7 @@ else:
     for i, photo in enumerate(photos):
         with cols[i % 3]:
             st.image(
-                f"https://api.dicebear.com/7.x/avataaars/svg?seed=meetup{photo['photo_id']}&backgroundColor=c8102e",
+                f"https://api.dicebear.com/9.x/avataaars/svg?eyebrows=default&eyes=default&facialHair[]&mouth=default&seed=Destiny",
                 use_container_width=True
             )
             st.caption(f"📍 {photo['caption']}")
