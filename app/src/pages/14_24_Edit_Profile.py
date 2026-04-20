@@ -9,6 +9,9 @@ SideBarLinks()
 st.title("Edit Profile")
 st.markdown("Keep your HuskyBuddy profile up to date so we can find you the best matches!")
 
+if st.button("← Back to Options", type="secondary", use_container_width=False):
+    st.switch_page('pages/10_Brandon_Home.py')
+
 # ── Session state ──────────────────────────────────────────────────────────────
 if "show_success_modal" not in st.session_state:
     st.session_state.show_success_modal = False

@@ -166,3 +166,63 @@ def delete_match(match_id):
         return jsonify({"error": str(e)}), 500
     finally:
         cursor.close()
+
+# Get all meetup photos for a user
+@matches.route("/users/<int:student_id>/photos", methods=["GET"])
+def get_user_photos(student_id):
+    cursor = get_db().cursor(dictionary=True)
+    try:
+        cursor.execute("""
+            SELECT mp.photo_id, mp.photo_url, mp.caption, mp.uploaded_at,
+                   u.first_name, u.last_name
+            FROM meetup_photo mp
+            JOIN husky_user u ON mp.uploaded_by = u.student_id
+            WHERE mp.uploaded_by IN (
+                SELECT student2_id FROM husky_match WHERE student1_id = %s
+                UNION
+                SELECT student1_id FROM husky_match WHERE student2_id = %s
+                UNION
+                SELECT %s
+            )
+            ORDER BY mp.uploaded_at DESC
+        """, (student_id, student_id, student_id))
+        photos = cursor.fetchall()
+        return jsonify(photos), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()
+
+
+# Upload a new meetup photo
+@matches.route("/users/<int:student_id>/photos", methods=["POST"])
+def upload_photo(student_id):
+    cursor = get_db().cursor(dictionary=True)
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "Request body is required"}), 400
+
+        required_fields = ["match_id", "photo_url"]
+        for field in required_fields:
+            if field not in data:
+                return jsonify({"error": f"Missing required field: {field}"}), 400
+
+        cursor.execute("""
+            INSERT INTO meetup_photo (match_id, uploaded_by, photo_url, caption)
+            VALUES (%s, %s, %s, %s)
+        """, (
+            data["match_id"],
+            student_id,
+            data["photo_url"],
+            data.get("caption", "")
+        ))
+        get_db().commit()
+        return jsonify({
+            "message": "Photo uploaded successfully",
+            "photo_id": cursor.lastrowid
+        }), 201
+    except Error as e:
+        return jsonify({"error": str(e)}), 500
+    finally:
+        cursor.close()

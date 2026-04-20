@@ -33,6 +33,19 @@ def fetch_json(path: str) -> List[Any]:
         raise last_error
     return []
 
+def rate_label(pct: int) -> str:
+    """Return a label for the given percentage value."""
+    if pct >= 80:
+        return "Excellent"
+    elif pct >= 60:
+        return "Good"
+    elif pct >= 40:
+        return "Fair"
+    elif pct >= 20:
+        return "Poor"
+    else:
+        return "Very Poor"
+
 
 def lower_status(df: pd.DataFrame) -> pd.DataFrame:
     """Normalise the 'status' column to lowercase strings."""
@@ -42,16 +55,6 @@ def lower_status(df: pd.DataFrame) -> pd.DataFrame:
     else:
         df["status"] = pd.Series(dtype=str)
     return df
-
-
-def rate_label(rate: int) -> str:
-    """Return an emoji indicator for a given success-rate percentage."""
-    if rate >= 75:
-        return "🟢"
-    if rate >= 65:
-        return "🟡"
-    return "🔴"
-
 
 def render_trend_chart(matches: pd.DataFrame) -> None:
     """Render the monthly sign-up trend line chart."""
@@ -339,7 +342,6 @@ def main() -> None:
 
     left_col, right_col = st.columns([1, 1], gap="large")
 
-    # ── LEFT ──────────────────────────────────────────────────────────────────
     with left_col:
         col1, col2 = st.columns(2)
         with col1:
@@ -374,7 +376,6 @@ def main() -> None:
             st.markdown("**User Satisfaction Survey Results**")
             render_satisfaction_chart(satisfaction_df)
 
-    # ── RIGHT ─────────────────────────────────────────────────────────────────
     with right_col:
         meet_col1, meet_col2 = st.columns(2)
         with meet_col1:
@@ -385,7 +386,7 @@ def main() -> None:
             )
         with meet_col2:
             st.metric(
-                label="No Meet Ups",
+                label="No Meet Ups", 
                 value=f"{removed:,}",
                 delta=None,
             )

@@ -3,19 +3,36 @@ import requests
 from modules.nav import SideBarLinks
 
 # Add sidebar links
+st.set_page_config(layout="wide")
+
+# Add sidebar links
 SideBarLinks()
 
-st.set_page_config(layout="wide")
 st.title("HuskyBuddy Chat")
 
-BASE_URL = "http://web-api:4000"
+current_user_id = st.session_state.get('user_id', 1)
+first_name = str(st.session_state.get('first_name', '')).strip().lower()
+return_page = st.session_state.get('match_chat_return_page')
 
-current_user_id = 1 # Brandon's  ID
+if not return_page:
+    if first_name == 'natalie':
+        return_page = 'pages/20_Natalie_Home.py'
+    elif first_name == 'brandon':
+        return_page = 'pages/10_Brandon_Home.py'
+    elif current_user_id == 2:
+        return_page = 'pages/20_Natalie_Home.py'
+    else:
+        return_page = 'pages/10_Brandon_Home.py'
+
+if st.button("← Back to Options", type="secondary", use_container_width=False):
+    st.switch_page(return_page)
+
+BASE_URL = "http://web-api:4000"
 
 # Get a random match
 if "match_id" not in st.session_state:
     st.markdown("Ready to chat with one of your HuskyBuddy matches?")
-    if st.button("Start a random chat!", use_container_width=True):
+    if st.button("Chat with your match!", use_container_width=True):
         try:
             resp = requests.get(f"{BASE_URL}/chat/random/{current_user_id}")
             if resp.status_code == 200:
