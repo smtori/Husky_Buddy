@@ -4,6 +4,7 @@ import streamlit as st
 import requests
 from modules.nav import SideBarLinks
 
+
 st.set_page_config(layout='wide')
 
 SideBarLinks()
@@ -62,7 +63,7 @@ with st.form("upload_photo_form"):
             try:
                 resp = requests.post(
                     f"{BASE_URL}/users/{current_user_id}/photos",
-                    json={
+                    json={ 
                         "match_id": match_id,
                         "photo_url": "https://api.dicebear.com/9.x/avataaars/svg?eyebrows=default&eyes=default&facialHair[]&mouth=default&seed=Aiden",
                         "caption": caption
