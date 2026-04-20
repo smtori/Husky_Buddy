@@ -1,11 +1,6 @@
 USE `husky-buddy-orig`;
 
 INSERT INTO student_major_tags (student_id, major_id) VALUES
-  (1,7),
-  (1,41),
-  (1,73),
-  (2,39),
-  (2,51),
   (3,54),
   (3,3),
   (3,50),
@@ -126,7 +121,6 @@ INSERT INTO student_major_tags (student_id, major_id) VALUES
   (12,29),
   (24,7),
   (24,60),
-  (1,66),
   (22,8),
   (14,61),
   (37,66),
