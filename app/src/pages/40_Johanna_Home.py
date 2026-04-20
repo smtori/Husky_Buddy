@@ -43,16 +43,6 @@ def lower_status(df: pd.DataFrame) -> pd.DataFrame:
         df["status"] = pd.Series(dtype=str)
     return df
 
-
-def rate_label(rate: int) -> str:
-    """Return an emoji indicator for a given success-rate percentage."""
-    if rate >= 75:
-        return "🟢"
-    if rate >= 65:
-        return "🟡"
-    return "🔴"
-
-
 def render_trend_chart(matches: pd.DataFrame) -> None:
     """Render the monthly sign-up trend line chart."""
     if not matches.empty and "matched_on" in matches.columns:
@@ -339,7 +329,6 @@ def main() -> None:
 
     left_col, right_col = st.columns([1, 1], gap="large")
 
-    # ── LEFT ──────────────────────────────────────────────────────────────────
     with left_col:
         col1, col2 = st.columns(2)
         with col1:
@@ -374,7 +363,6 @@ def main() -> None:
             st.markdown("**User Satisfaction Survey Results**")
             render_satisfaction_chart(satisfaction_df)
 
-    # ── RIGHT ─────────────────────────────────────────────────────────────────
     with right_col:
         meet_col1, meet_col2 = st.columns(2)
         with meet_col1:
