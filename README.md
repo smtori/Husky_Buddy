@@ -205,15 +205,6 @@ Pages under `app/src/pages/` are prefixed by role number (`0_`, `1_`, `2_`,
 etc.) — we'll adapt these to Husky Buddy's actual user types (e.g. *Student*,
 *Student Org Admin*, *System Admin*) as the project evolves.
 
-### Machine learning scaffolding
-
-A placeholder ML module lives at `api/backend/ml_models/model01.py`. It is
-exposed through the `/prediction/<var_01>/<var_02>` route in
-`api/backend/simple/simple_routes.py` and consumed by
-`app/src/pages/11_Prediction.py`. Model parameter values should be read from
-the database at inference time — **do not hard-code weights** in the
-`predict` function.
-
 ---
 
 ## Troubleshooting
