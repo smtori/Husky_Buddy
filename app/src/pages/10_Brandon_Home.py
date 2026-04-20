@@ -111,15 +111,15 @@ with st.container(border=True):
 st.write("")  # spacer
  # --------------------
 if st.button("✏️  Edit Profile", type="primary", use_container_width=True):
-            st.switch_page("pages/15_Edit_Profile.py")
+            st.switch_page("pages/14_24_Edit_Profile.py")
  
 if st.button("💬  HuskyBuddy Chats", type="primary", use_container_width=True):
-            st.switch_page("pages/14_Match_Chat.py")
+            st.switch_page("pages/13_23_Match_Chat.py")
  
 if st.button("📝  Submit a Report", use_container_width=True):
-        st.switch_page("pages/11_Submit_Report.py")
+        st.switch_page("pages/12_22_Submit_Report.py")
 if st.button('📸  View Photo Gallery',
              type='primary',
              use_container_width=True):
-    st.switch_page('pages/01_Photo_Gallery.py')
+    st.switch_page('pages/11_21_Photo_Gallery.py')
  

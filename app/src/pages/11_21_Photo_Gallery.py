@@ -10,7 +10,20 @@ SideBarLinks()
 
 BASE_URL = "http://web-api:4000"
 
-current_user_id = st.session_state['user_id']
+
+current_user_id = st.session_state.get('user_id', 1)
+first_name = str(st.session_state.get('first_name', '')).strip().lower()
+return_page = st.session_state.get('match_chat_return_page')
+
+if not return_page:
+    if first_name == 'natalie':
+        return_page = 'pages/20_Natalie_Home.py'
+    elif first_name == 'brandon':
+        return_page = 'pages/10_Brandon_Home.py'
+    elif current_user_id == 2:
+        return_page = 'pages/20_Natalie_Home.py'
+    else:
+        return_page = 'pages/10_Brandon_Home.py'
 
 st.header(f"My HuskyBuddy Photo Gallery")
 st.write(f"### Hi, {st.session_state['first_name']}.")
