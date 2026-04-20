@@ -37,10 +37,10 @@ else:
     cols = st.columns(3)
     for i, photo in enumerate(photos):
         with cols[i % 3]:
-            st.image(photo["photo_url"], use_column_width=True)
+            st.image(photo["photo_url"], use_container_width=True)
             st.caption(f" {photo['caption']}")
             st.write(f"Uploaded by **{photo['first_name']} {photo['last_name']}**")
-            st.write(f" {photo['uploaded_at'][:10]}")
+            st.write(f" {photo['uploaded_at'][:16]}")
             st.divider()
 
 # ── Upload New Photo ────────────────────────────────────────
