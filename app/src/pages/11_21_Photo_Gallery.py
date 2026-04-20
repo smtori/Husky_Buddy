@@ -3,6 +3,7 @@ logger = logging.getLogger(__name__)
 import streamlit as st
 import requests
 from modules.nav import SideBarLinks
+import time
 
 st.set_page_config(layout='wide')
 
@@ -51,7 +52,7 @@ else:
     for i, photo in enumerate(photos):
         with cols[i % 3]:
             st.image(
-                f"assets/marino_meetup.webp",
+                photo["photo_url"],
                 use_container_width=True
             )
             st.caption(f"📍 {photo['caption']}")
@@ -75,9 +76,9 @@ with st.form("upload_photo_form"):
             try:
                 resp = requests.post(
                     f"{BASE_URL}/users/{current_user_id}/photos",
-                    json={
+                    json={ 
                         "match_id": match_id,
-                        "photo_url": "assets/tatte_meetup.jpg",
+                        "photo_url": f"https://api.dicebear.com/9.x/avataaars/svg?seed=meetup{match_id}{int(time.time())}&eyebrows=default&eyes=default&mouth=default",
                         "caption": caption
                     }
                 )
