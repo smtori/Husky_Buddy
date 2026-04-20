@@ -13,8 +13,11 @@ st.set_page_config(layout='wide')
 # Call the SideBarLinks from the nav module in the modules directory
 SideBarLinks()
 
+API_URL = "http://web-api:4000"
+
+current_user_id = st.session_state['user_id']
 # set the header of the page
-st.header('World Bank Data')
+st.header('HuskyBuddy Photo Gallery')
 
 # You can access the session state to make a more customized/personalized app experience
 st.write(f"### Hi, {st.session_state['first_name']}.")

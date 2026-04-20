@@ -15,6 +15,7 @@ from backend.analytics.analytics_routes import analytics
 
 
 
+
 def create_app() -> Flask:
     """
     handles app creation logic, no modifications necessary excluding blueprint registration
