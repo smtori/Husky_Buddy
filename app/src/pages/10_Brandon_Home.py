@@ -10,7 +10,9 @@ st.set_page_config(layout='wide')
 SideBarLinks()
 
 st.title(f"Welcome, {st.session_state['first_name']}.")
-st.write('### What would you like to do today?')
+
+first_name = st.session_state.get('first_name', 'Brandon')
+last_name  = st.session_state.get('last_name', 'Smith')
 
 with st.container(border=True):
     header_left, header_right = st.columns([1, 3], gap="medium")
