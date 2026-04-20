@@ -1,45 +1,75 @@
 import logging
 logger = logging.getLogger(__name__)
-import pandas as pd
 import streamlit as st
-import world_bank_data as wb
-import matplotlib.pyplot as plt
-import numpy as np
-import plotly.express as px
+import requests
 from modules.nav import SideBarLinks
 
 st.set_page_config(layout='wide')
 
-# Call the SideBarLinks from the nav module in the modules directory
 SideBarLinks()
 
-API_URL = "http://web-api:4000"
+BASE_URL = "http://web-api:4000"
 
 current_user_id = st.session_state['user_id']
-# set the header of the page
-st.header('HuskyBuddy Photo Gallery')
 
-# You can access the session state to make a more customized/personalized app experience
+st.header(f"My HuskyBuddy Photo Gallery")
 st.write(f"### Hi, {st.session_state['first_name']}.")
 
-# get the countries from the world bank data
-with st.echo(code_location='above'):
-    countries:pd.DataFrame = wb.get_countries()
-   
-    st.dataframe(countries)
+# ── Load Photos ─────────────────────────────────────────────
+def load_photos():
+    try:
+        resp = requests.get(f"{BASE_URL}/users/{current_user_id}/photos")
+        if resp.status_code == 200:
+            return resp.json()
+        else:
+            st.error("Could not load photos.")
+            return []
+    except requests.exceptions.RequestException:
+        st.error("Could not connect to the API.")
+        return []
 
-# the with statment shows the code for this block above it 
-with st.echo(code_location='above'):
-    arr = np.random.normal(1, 1, size=100)
-    test_plot, ax = plt.subplots()
-    ax.hist(arr, bins=20)
+photos = load_photos()
 
-    st.pyplot(test_plot)
+if not photos:
+    st.info("No meetup photos yet! Complete a HuskyBuddy chat and upload a photo to get started.")
+else:
+    st.write(f"### You have {len(photos)} meetup photo(s)!")
+    cols = st.columns(3)
+    for i, photo in enumerate(photos):
+        with cols[i % 3]:
+            st.image(photo["photo_url"], use_column_width=True)
+            st.caption(f" {photo['caption']}")
+            st.write(f"Uploaded by **{photo['first_name']} {photo['last_name']}**")
+            st.write(f" {photo['uploaded_at'][:10]}")
+            st.divider()
 
+# ── Upload New Photo ────────────────────────────────────────
+st.write("---")
+st.subheader("Upload a New Photo")
 
-with st.echo(code_location='above'):
-    slim_countries = countries[countries['incomeLevel'] != 'Aggregates']
-    data_crosstab = pd.crosstab(slim_countries['region'], 
-                                slim_countries['incomeLevel'],  
-                                margins = False) 
-    st.table(data_crosstab)
+with st.form("upload_photo_form"):
+    match_id = st.number_input("Match ID", min_value=1, step=1)
+    photo_url = st.text_input("Photo URL")
+    caption = st.text_area("Caption")
+    submitted = st.form_submit_button("Upload Photo")
+
+    if submitted:
+        if not photo_url:
+            st.error("Photo URL is required.")
+        else:
+            try:
+                resp = requests.post(
+                    f"{BASE_URL}/users/{current_user_id}/photos",
+                    json={
+                        "match_id": match_id,
+                        "photo_url": photo_url,
+                        "caption": caption
+                    }
+                )
+                if resp.status_code == 201:
+                    st.success("Photo uploaded successfully!")
+                    st.rerun()
+                else:
+                    st.error(f"Failed to upload: {resp.json().get('error')}")
+            except requests.exceptions.RequestException:
+                st.error("Could not connect to the API.")
