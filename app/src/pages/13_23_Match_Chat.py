@@ -54,10 +54,10 @@ buddy_name = st.session_state.buddy_name
 
 st.subheader(f"Chatting with {buddy_name}")
 
-if st.button("New random chat"):
-    del st.session_state["match_id"]
-    del st.session_state["buddy_name"]
-    st.rerun()
+# if st.button("New random chat"):
+#     del st.session_state["match_id"]
+#     del st.session_state["buddy_name"]
+#     st.rerun()
 
 # Load messages
 def load_messages():

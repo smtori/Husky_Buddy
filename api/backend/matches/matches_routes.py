@@ -95,7 +95,6 @@ def get_previous_matches(student_id):
             LEFT JOIN husky_user u2 ON hm.student2_id = u2.student_id
             LEFT JOIN meetup m ON hm.match_id = m.match_id
             WHERE (hm.student1_id = %s OR hm.student2_id = %s)
-            AND hm.status != 'active'
             GROUP BY hm.match_id, hm.status, hm.matched_on, buddy_id, buddy_name
             ORDER BY hm.matched_on DESC
         """
