@@ -19,7 +19,7 @@ with st.container(border=True):
         # Profile picture — placeholder via DiceBear.
         # Replace the URL with an uploaded/local image path when ready.
         st.image(
-            "brandon.svg",
+            "assets/brandon.svg",
             width=200,
         )
  
