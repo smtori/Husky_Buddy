@@ -26,7 +26,7 @@ except Exception as e:
 st.caption(f"Loaded {len(users)} users")
 
 search = st.text_input(
-    "Search by name or email",
+    label="Search Users",
     placeholder="Search by name or email..."
 )
 
