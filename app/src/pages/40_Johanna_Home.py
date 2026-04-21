@@ -18,11 +18,11 @@ SideBarLinks()
 
 API_BASES = ["http://api:4000", "http://localhost:4000"]
 
-if st.button("👥  Users Dashboard", type="primary", use_container_width=True):
+if st.button("Users Dashboard", type="primary", use_container_width=True):
     st.switch_page("pages/41_Users_Dashboard.py")
 
-if st.button("🤝  Matches Dashboard", type="primary", use_container_width=True):
+if st.button("Matches Dashboard", type="primary", use_container_width=True):
     st.switch_page("pages/42_Matches_Dashboard.py")
 
-if st.button("⭐  Feedback & Reports Dashboard", type="primary", use_container_width=True):
+if st.button("Feedback & Reports Dashboard", type="primary", use_container_width=True):
     st.switch_page("pages/43_Feedback_Reports_Dashboard.py")

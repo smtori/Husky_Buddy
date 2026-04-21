@@ -13,10 +13,10 @@ logger = logging.getLogger(__name__)
 
 st.set_page_config(page_title="Feedback & Reports Dashboard", layout="wide")
 
+
 SideBarLinks()
 
 API_BASES = ["http://api:4000", "http://localhost:4000"]
-
 
 def fetch_json(path: str) -> Union[List[Any], dict]:
     """Fetch JSON from the first reachable API base for the given path."""
@@ -86,8 +86,9 @@ def main() -> None:
     st.header("Feedback & Reports Dashboard")
     st.caption("Persona 4: Johanna Park")
 
-    if st.button("<- Back to Home", type="secondary"):
-        st.switch_page("Home.py")
+    if st.button("← Back to Data Analyst Home", type="primary", use_container_width=False):
+        st.switch_page('pages/40_Johanna_Home.py')
+
 
     st.markdown("---")
 

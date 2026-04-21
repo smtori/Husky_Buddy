@@ -173,8 +173,8 @@ def main() -> None:
     st.header("Matches Dashboard")
     st.caption("Persona 4: Johanna Park")
 
-    if st.button("<- Back to Home", type="secondary"):
-        st.switch_page("Home.py")
+    if st.button("← Back to Data Analyst Home", type="primary", use_container_width=False):
+        st.switch_page('pages/40_Johanna_Home.py')
 
     st.markdown("---")
 
