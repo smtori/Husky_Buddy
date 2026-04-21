@@ -18,6 +18,8 @@ SideBarLinks()
 
 API_BASES = ["http://api:4000", "http://localhost:4000"]
 
+if st.button("← Back to Options", type="secondary", use_container_width=False):
+    st.switch_page(return_page)
 
 def fetch_json(path: str) -> List[Any]:
     """Fetch JSON from the first reachable API base for the given path."""
