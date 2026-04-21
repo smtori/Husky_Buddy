@@ -1,3 +1,5 @@
+"""Handles Campus Spot Management UI + Logic"""
+
 import logging
 import streamlit as st
 import requests

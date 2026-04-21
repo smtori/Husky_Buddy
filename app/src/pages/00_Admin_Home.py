@@ -24,5 +24,5 @@ if st.button('View Moderation Logs',
              use_container_width=True):
     st.switch_page('pages/02_Moderation_Log.py')
 
-if st.button('Manage Campus Spots', type='primary', use_container_width=True):
+if st.button('Manage campus spots', type='primary', use_container_width=True):
     st.switch_page('pages/03_Campus_Spot_Management.py')
