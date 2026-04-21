@@ -12,7 +12,7 @@ VALUES
   ('Ava', 'Lee', 'lee.ava@northeastern.edu', '3rd', 'verified'),
   ('Mason', 'Kowalski', 'kow.mas@northeastern.edu', '4th', 'verified'),
   ('Isabella', 'Osei', 'ose.isa@northeastern.edu', '5th', 'verified'),
-  ('Ethan', 'Murphy', 'mur.eth@northeastern.edu', 'Grad', 'verified'),
+  ('Ethan', 'Murphy', 'mur.eth@northeastern.edu', 'Grad', 'flagged'),
   ('Mia', 'Hassan', 'has.mia@northeastern.edu', '1st', 'verified'),
   ('Logan', 'Tanaka', 'tan.log@northeastern.edu', '2nd', 'verified'),
   ('Charlotte', 'Williams', 'wil.cha@northeastern.edu', '3rd', 'verified'),
@@ -21,41 +21,29 @@ VALUES
   ('Amir', 'Bakr', 'bak.ami@northeastern.edu', 'Grad', 'pending'),
   ('Zoe', 'Thompson', 'tho.zoe@northeastern.edu', '1st', 'verified'),
   ('Carlos', 'Diaz', 'dia.car@northeastern.edu', '2nd', 'verified'),
-  ('Chloe', 'Park', 'par.chl@northeastern.edu', '3rd', 'verified'),
+  ('Chloe', 'Park', 'par.chl@northeastern.edu', '3rd', 'flagged'),
   ('Mateo', 'Reyes', 'rey.mat@northeastern.edu', '4th', 'verified'),
-  ('Riley', 'Singh', 'sin.ril@northeastern.edu', '5th', 'verified'),
+  ('Riley', 'Singh', 'sin.ril@northeastern.edu', '5th', 'flagged'),
   ('Owen', 'Moore', 'moo.owe@northeastern.edu', 'Grad', 'verified'),
   ('Layla', 'Walsh', 'wal.lay@northeastern.edu', '1st', 'pending'),
   ('Nolan', 'Okonkwo', 'oko.nol@northeastern.edu', '2nd', 'verified'),
   ('Penelope', 'Yamamoto', 'yam.pen@northeastern.edu', '3rd', 'verified'),
   ('Dylan', 'Fernandez', 'fer.dyl@northeastern.edu', '4th', 'verified'),
   ('Aria', 'Ahmed', 'ahm.ari@northeastern.edu', '5th', 'verified'),
-  ('Ryan', 'Brown', 'bro.rya@northeastern.edu', 'Grad', 'verified'),
+  ('Ryan', 'Brown', 'bro.rya@northeastern.edu', 'Grad', 'flagged'),
   ('Nora', 'Davis', 'dav.nor@northeastern.edu', '1st', 'verified'),
   ('Miles', 'Garcia', 'gar.mil@northeastern.edu', '2nd', 'verified'),
   ('Luna', 'Wilson', 'wil.lun@northeastern.edu', '3rd', 'verified'),
   ('Caleb', 'Anderson', 'and.cal@northeastern.edu', '4th', 'verified'),
   ('Lily', 'Thomas', 'tho.lil@northeastern.edu', '5th', 'verified'),
   ('Isaac', 'Jackson', 'jac.isa@northeastern.edu', 'Grad', 'verified'),
-  ('Scarlett', 'White', 'whi.sca@northeastern.edu', '1st', 'verified'),
+  ('Scarlett', 'White', 'whi.sca@northeastern.edu', '1st', 'flagged'),
   ('Adrian', 'Harris', 'har.adr@northeastern.edu', '2nd', 'verified'),
   ('Hannah', 'Martin', 'mar.han@northeastern.edu', '3rd', 'verified'),
   ('Eli', 'Taylor', 'tay.eli@northeastern.edu', '4th', 'unverified'),
   ('Stella', 'Lewis', 'lew.ste@northeastern.edu', '5th', 'verified');
 
-INSERT INTO husky_match (student1_id, student2_id, status, matched_on) VALUES
-  (11,32,'removed','2025-06-20 00:00:00'),
-  (3,20,'active','2025-06-20 00:00:00'),
-  (27,33,'pending','2025-03-21 00:00:00'),
-  (9,33,'removed','2025-12-08 00:00:00'),
-  (13,14,'pending','2025-08-15 00:00:00');
-
 INSERT INTO campus_spot (spot_name, location) VALUES
-  ('Marino Recreation Center','369 Huntington Ave'),
-  ('Snell Library','360 Huntington Ave'),
-  ('Tatte Bakery','360 Huntington Ave'),
-  ('Prudential Center','800 Boylston St'),
-  ('Kigo Kitchen','360 Huntington Ave'),
   ('Curry Student Center','346 Huntington Ave'),
   ('Centennial Common','Northeastern University'),
   ('The Fenway','Northeastern University'),
@@ -86,7 +74,6 @@ INSERT INTO campus_spot (spot_name, location) VALUES
   ('Kariotis Hall','360 Huntington Ave'),
   ('East Village Café','East Village'),
   ('Alumni Pavilion','Northeastern University');
-
 
 -- ===== icebreaker_prompt (35 rows) =====
 INSERT INTO icebreaker_prompt (prompt_text, category) VALUES
@@ -126,12 +113,7 @@ INSERT INTO icebreaker_prompt (prompt_text, category) VALUES
   ('What would your Northeastern highlight reel include?', 'Student Life'),
   ('What is your most unpopular academic opinion?', 'Academics');
 
-
 INSERT INTO admin (name, email, role) VALUES
-  ('Adam Johnson','johnson.ad@northeastern.edu','IT Admin'),
-  ('Johanna Park','park.jo@northeastern.edu','Data Lead'),
   ('Marcus Webb','webb.ma@northeastern.edu','Community Manager'),
   ('Priya Shah','shah.pr@northeastern.edu','Moderation Lead'),
   ('Diane Torres','torres.di@northeastern.edu','Product Manager');
-
-

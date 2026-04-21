@@ -53,5 +53,4 @@ def create_app() -> Flask:
     app.register_blueprint(chat)
     app.register_blueprint(analytics)
 
-
     return app
