@@ -274,6 +274,7 @@ def upload_photo(student_id):
             "photo_id": cursor.lastrowid
         }), 201
     except Error as e:
+        current_app.logger.error(f"Database error in upload_photo: {e}")
         return jsonify({"error": str(e)}), 500
     finally:
         cursor.close()
