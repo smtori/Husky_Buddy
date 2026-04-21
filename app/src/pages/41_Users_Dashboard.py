@@ -17,9 +17,6 @@ st.set_page_config(page_title="Users Dashboard", layout="wide")
 
 SideBarLinks()
 
-if st.button("← Back to Data Analyst Home", type="primary", use_container_width=False):
-    st.switch_page('pages/40_Johanna_Home.py')
-
 API_BASES = ["http://api:4000", "http://localhost:4000"]
 
  
@@ -101,8 +98,8 @@ def main() -> None:
     st.header("Users Dashboard")
     st.caption("Persona 4: Johanna Park")
  
-    if st.button("← Back to Data Analyst Home", type="primary", use_container_width=False):
-        st.switch_page('pages/40_Johanna_Home.py')
+    if st.button("<- Back to Home", type="secondary"):
+        st.switch_page("Home.py")
  
     st.markdown("---")
  
