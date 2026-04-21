@@ -11,7 +11,7 @@ st.set_page_config(page_title='Moderation Log', layout='wide')
 SideBarLinks()
 
 st.header("User Account Management")
-if st.button("← Back to Admin Home", type="secondary", use_container_width=False):
+if st.button("← Back to Admin Home", type="primary", use_container_width=False):
     st.switch_page('pages/00_Admin_Home.py')
 
 API_BASE = 'http://api:4000'
@@ -79,15 +79,15 @@ if 'active_investigation_report' not in st.session_state:
 c1, c2, c3 = st.columns(3)
 
 with c1:
-    if st.button('All', key='mod_filter_all', use_container_width=True):
+    if st.button('All', key='mod_filter_all', type='primary', use_container_width=True):
         st.session_state['moderation_filter'] = 'All'
 
 with c2:
-    if st.button('Pending', key='mod_filter_pending', use_container_width=True):
+    if st.button('Pending', key='mod_filter_pending', type='primary', use_container_width=True):
         st.session_state['moderation_filter'] = 'Flagged'
 
 with c3:
-    if st.button('Resolved', key='mod_filter_resolved', use_container_width=True):
+    if st.button('Resolved', key='mod_filter_resolved', type='primary', use_container_width=True):
         st.session_state['moderation_filter'] = 'Resolved'
 
 selected_filter = st.session_state['moderation_filter']
@@ -142,20 +142,20 @@ for report in filtered_reports:
 
             mc1, mc2 = st.columns(2)
             with mc1:
-                if st.button('Send Message', key=f'send_message_{report_id}', use_container_width=True):
+                if st.button('Send Message', key=f'send_message_{report_id}', type='primary', use_container_width=True):
                     if moderator_message.strip():
                         st.success(f"Message prepared for {report['reported_name']} at {report['reported_email']}")
                     else:
                         st.warning('Write a message before sending.')
             with mc2:
-                if st.button('Close Investigation Panel', key=f'close_investigation_{report_id}', use_container_width=True):
+                if st.button('Close Investigation Panel', key=f'close_investigation_{report_id}', type='primary', use_container_width=True):
                     st.session_state['active_investigation_report'] = None
                     st.rerun()
 
         b1, b2, b3 = st.columns(3)
 
         with b1:
-            if st.button('Dismiss', key=f'dismiss_{report_id}', use_container_width=True):
+            if st.button('Dismiss', key=f'dismiss_{report_id}', type='primary', use_container_width=True):
                 try:
                     r = requests.put(
                         f'{API_BASE}/reports/{report_id}',
@@ -170,12 +170,12 @@ for report in filtered_reports:
                     st.error(f'Could not dismiss report {report_id}: {e}')
 
         with b2:
-            if st.button('Investigate', key=f'investigate_{report_id}', use_container_width=True):
+            if st.button('Investigate', key=f'investigate_{report_id}', type='primary', use_container_width=True):
                 st.session_state['active_investigation_report'] = report_id
                 st.rerun()
 
         with b3:
-            if st.button('Resolved', key=f'resolved_{report_id}', use_container_width=True):
+            if st.button('Resolved', key=f'resolved_{report_id}', type='primary', use_container_width=True):
                 try:
                     r = requests.put(
                         f'{API_BASE}/reports/{report_id}',
